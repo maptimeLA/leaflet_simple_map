@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Great LA Pizza</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+</head>
+<body>
+	<div id="mapid" style="position:fixed; top:0; bottom:0; width:100%;"></div>
+	<script>
+
+		var mymap = L.map('mapid').setView([34.052234, -118.243685], 10);
+
+		L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png', {
+			maxZoom: 18
+		}).addTo(mymap);
+        
+		L.marker([51.5, -0.09]).addTo(mymap)
+			.bindPopup("<b>Hello world!</b><br />I am a popup.");
+
+		L.circle([51.508, -0.11], 500, {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.5
+		}).addTo(mymap).bindPopup("I am a circle.");
+
+		L.polygon([
+			[51.509, -0.08],
+			[51.503, -0.06],
+			[51.51, -0.047]
+		]).addTo(mymap).bindPopup("I am a polygon.");
+
+
+		var popup = L.popup();
+
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent("You clicked the map at " + e.latlng.toString())
+				.openOn(mymap);
+		}
+
+		mymap.on('click', onMapClick);
+
+        var communityplans = $.getJSON('http://geohub.lacity.org/datasets/788c57004bc543f1874f61a1794a1a6b_9.geojson', function(data) {
+                L.geoJson(data, {
+                style:{
+                color: '#997300',
+                fillColor:'#fff',
+                fillOpacity:.5
+                }
+                }).addTo(mymap).bringToBack();
+        });
+        
+       var pizzalocations = $.getJSON('https://data.lacity.org/resource/66es-k6kk.json', function(data) {
+	           $.each(data, function(index, value) {
+                L.circle([value.location_1.latitude,value.location_1.longitude],300,
+		            {
+                    color: '#5a8bc8',
+				    weight:0.0,
+				    fillColor: '#ff9900',
+				    fillOpacity: 1,
+				    }
+               ).addTo(mymap).bindPopup(value.business_name);
+  	     });
+        });
+        
+
+        
+	</script>
+</body>
+</html>
