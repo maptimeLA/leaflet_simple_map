@@ -15,7 +15,8 @@
 		var mymap = L.map('mapid').setView([34.052234, -118.243685], 10);
 
 		L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png', {
-			maxZoom: 18
+			maxZoom: 18,
+			attribution:'<a id="home-link" target="_top" href="../">Map tiles</a> by <a target="_top" href="http://stamen.com">Stamen Design</a>, under <a target="_top" href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a target="_top" href="http://openstreetmap.org">OpenStreetMap</a>, under <a target="_top" href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.',
 		}).addTo(mymap);
         
 		L.marker([51.5, -0.09]).addTo(mymap)
